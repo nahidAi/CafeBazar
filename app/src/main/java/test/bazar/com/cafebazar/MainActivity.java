@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import com.ss.bottomnavigation.BottomNavigation;
 import com.ss.bottomnavigation.events.OnSelectedItemChangeListener;
@@ -27,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
     public  void  setupViews(){
         BottomNavigation bottomNavigation=(BottomNavigation)findViewById(R.id.bottom_navigation);
         // این مال آیتم پیش فرض هست که خودکار روی این آیتم باشه موقع اجرا
@@ -42,23 +40,23 @@ public class MainActivity extends AppCompatActivity {
                 switch (itemId){
                     case R.id.tab_home:
                         transaction=getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.rel_fragment_containers,new FragmentHome());
+                        transaction.replace(R.id.rel_parent_allView,new FragmentHome());
                         break;
                     case R.id.tab_bests:
                         transaction=getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.rel_fragment_containers,new FragmentBests());
+                        transaction.replace(R.id.rel_parent_allView,new FragmentBests());
                         break;
                     case R.id.tab_cats:
                         transaction=getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.rel_fragment_containers,new FragmentCats());
+                        transaction.replace(R.id.rel_parent_allView,new FragmentCats());
                         break;
                     case R.id.tab_search:
                         transaction=getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.rel_fragment_containers,new FragmentSearch());
+                        transaction.replace(R.id.rel_parent_allView,new FragmentSearch());
                         break;
                     case R.id.tab_apps:
                         transaction=getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.rel_fragment_containers,new FragmentApps());
+                        transaction.replace(R.id.rel_parent_allView,new FragmentApps());
                         break;
                 }
                 transaction.commit();

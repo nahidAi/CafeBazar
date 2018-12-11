@@ -2,10 +2,14 @@
 <resources>
     <color name="colorPrimary">#0e762f</color>
     <color name="colorPrimaryDark">#19690d</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#b6b3b4</color>
     <color name="grey_50">#FAFAFA</color>
     <color name="white">#fff</color>
     <color name="black">#000</color>
     <color name="grey_600">#43A047</color>
     <color name="grey_300">#E0E0E0</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_400">#BDBDBD</color>
+    <color name="star_color">#FFEB3B</color>
+
 </resources>
