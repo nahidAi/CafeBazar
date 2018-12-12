@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="100dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layoutDirection="rtl"
+    android:id="@+id/rel_appNew_parent"
+    android:layout_marginRight="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/img_newApp"
+        tools:src="@drawable/ic_launcher_background"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+    <TextView
+        android:id="@+id/txt_newApp_coinTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="رایگان"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/txt_newApp_title"/>
+    <ImageView
+        android:id="@+id/img_coin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:srcCompat="@drawable/ic_coin_grey_24dp"
+        android:layout_toLeftOf="@id/txt_newApp_coinTitle"
+        android:layout_below="@id/txt_newApp_title"/>
+    <TextView
+        android:id="@+id/txt_newApp_title"
+        android:minLines="1"
+        android:maxLines="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_newApp"
+        tools:text="بازی کودکانه"/>
+
+
+
+</RelativeLayout>

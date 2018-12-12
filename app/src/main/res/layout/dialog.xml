@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/grey_50"
+    android:layout_height="wrap_content"
+    android:padding="24dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatRatingBar
+        android:id="@+id/rt_dialog_ratingBar"
+        android:stepSize="1"
+        android:progressTint="@color/star_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View
+        android:background="@color/grey_300"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <EditText
+        android:id="@+id/edt_dialog_commentTitle"
+        android:textCursorDrawable="@drawable/cursor"
+        android:padding="8dp"
+        android:layout_marginBottom="8dp"
+        android:hint="نظر خود را وارد کنید..."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:elevation="4dp"
+        android:padding="8dp"
+        android:layoutDirection="rtl"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_marginRight="8dp"
+            android:id="@+id/img_dialog_profile"
+            app:srcCompat="@drawable/ic_person_grey_24dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <TextView
+            android:id="@+id/txt_dialog_userName"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@+id/img_dialog_profile"
+            android:text="مجتبی"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txt_dialog_saveComment"
+            android:layout_marginLeft="8dp"
+            android:layout_alignParentLeft="true"
+            android:text="ثبت"
+            android:textColor="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</LinearLayout>
+
