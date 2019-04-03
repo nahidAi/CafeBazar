@@ -1,11 +1,16 @@
 package test.bazar.com.cafebazar.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -57,6 +62,8 @@ public class FragmentHome extends Fragment implements BaseSliderView.OnSliderCli
     List<App> newApps;
     List<App> updateApp;
     ImageView imgProfile;
+    String phoneNumber = "";
+    SharedPreferences sharedPreferences;
 
 
     @Nullable
@@ -72,54 +79,124 @@ public class FragmentHome extends Fragment implements BaseSliderView.OnSliderCli
         imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
-                View bottomSheetView = getLayoutInflater().inflate(R.layout.buttom_sheet_profile, null);
-                bottomSheetDialog.setContentView(bottomSheetView);
-                ///////// تغییر اندازه باتم شیت
-                BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) bottomSheetView.getParent());
-                bottomSheetBehavior.setPeekHeight(
+                sharedPreferences = getContext().getSharedPreferences("home", Context.MODE_PRIVATE);
+                String username = sharedPreferences.getString("username", "");
+                if (username.equals("")) {
+                    final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+                    View bottomSheetView = getLayoutInflater().inflate(R.layout.buttom_sheet_profile, null);
+                    bottomSheetDialog.setContentView(bottomSheetView);
+                    ///////// تغییر اندازه باتم شیت
+                    BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) bottomSheetView.getParent());
+                    bottomSheetBehavior.setPeekHeight(
 
-                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 500, getResources().getDisplayMetrics())
+                            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 500, getResources().getDisplayMetrics())
 
-                        //////////////////////////////////
+                            //////////////////////////////////
 
-                );
-                final EditText edtPhoneNumber = (EditText) bottomSheetView.findViewById(R.id.editTextNumber);
-                final ProgressBar progressBar = (ProgressBar) bottomSheetView.findViewById(R.id.spin_kit);
-                Sprite doubleBounce = new DoubleBounce();
-                progressBar.setIndeterminateDrawable(doubleBounce);
-                Button btnRegister = (Button) bottomSheetView.findViewById(R.id.buttonRegister);
-                btnRegister.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ApiService service = ApiClient.getClient().create(ApiService.class);
-                        if (edtPhoneNumber.getText().toString().equals("")) {
-                            edtPhoneNumber.setError("لطفا شماره همراه خود را وارد کنید");
+                    );
+                    final EditText edtPhoneNumber = (EditText) bottomSheetView.findViewById(R.id.editTextNumber);
+                    final ProgressBar progressBar = (ProgressBar) bottomSheetView.findViewById(R.id.spin_kit);
+                    Sprite doubleBounce = new DoubleBounce();
+                    progressBar.setIndeterminateDrawable(doubleBounce);
+                    Button btnRegister = (Button) bottomSheetView.findViewById(R.id.buttonRegister);
+                    btnRegister.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final ApiService service = ApiClient.getClient().create(ApiService.class);
+                            if (edtPhoneNumber.getText().toString().equals("")) {
+                                edtPhoneNumber.setError("لطفا شماره همراه خود را وارد کنید");
 
-                        } else {
-                            progressBar.setVisibility(View.VISIBLE);
-                            Call<ResponseBody> call = service.sendNumber(edtPhoneNumber.getText().toString());
-                            call.enqueue(new Callback<ResponseBody>() {
-                                @Override
-                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                    try {
-                                        Log.i("LOG", "onResponse: " + response.body().string());
-                                        bottomSheetDialog.setContentView(R.layout.bottom_sheet_validation_code);
+                            } else {
+                                phoneNumber = edtPhoneNumber.getText().toString();
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("phoneNumber", phoneNumber);
+                                editor.apply();
+                                progressBar.setVisibility(View.VISIBLE);
+                                Call<ResponseBody> call = service.sendNumber(edtPhoneNumber.getText().toString());
+                                call.enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(final Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        try {
 
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                                            Log.i("LOG", "onResponse: " + response.body().string());
+                                            bottomSheetDialog.dismiss();
+                                            final BottomSheetDialog bottomSheetValisation = new BottomSheetDialog(getContext());
+                                            final View validationView = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_validation_code, null);
+                                            bottomSheetValisation.setContentView(validationView);
+                                            bottomSheetValisation.show();
+
+                                            final EditText edtvalidatin = validationView.findViewById(R.id.edt_bottomSheetValidation_code);
+                                            Button btnvalidation = validationView.findViewById(R.id.btn_bottomSheetValidation_validation);
+                                            btnvalidation.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    // Toast.makeText(getContext(), "click shod", Toast.LENGTH_SHORT).show();
+                                                    ApiService service1 = ApiClient.getClient().create(ApiService.class);
+                                                    Call<ResponseBody> call1 = service1.sendvalidationCode(edtvalidatin.getText().toString(), phoneNumber);
+                                                    call1.enqueue(new Callback<ResponseBody>() {
+                                                        @Override
+                                                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                            try {
+                                                                // Log.i("VALIDATION", "onResponse is : " + response.body().string());
+                                                                String userId = response.body().string();
+                                                                //این یعنی هر گونه فاصله داره بگیر این فاصله هارو
+                                                                userId = userId.trim();
+                                                                if (!userId.equals("validation faild")) {
+                                                                    Toast.makeText(getContext(), "به بازار خوش آمدید", Toast.LENGTH_SHORT).show();
+                                                                    sharedPreferences = getContext().getSharedPreferences("home", Context.MODE_PRIVATE);
+                                                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                                    editor.putString("username", phoneNumber);
+                                                                    editor.putString("userId", userId);
+                                                                    editor.apply();
+
+                                                                    bottomSheetValisation.dismiss();
+                                                                } else {
+                                                                    Toast.makeText(getContext(), "کد فعالسازی اشتباه است دوباره سعی کنید", Toast.LENGTH_SHORT).show();
+
+                                                                }
+                                                            } catch (IOException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                                        }
+                                                    });
+
+                                                }
+                                            });
+
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
-                    }
-                });
-                bottomSheetDialog.show();
+                    });
+                    bottomSheetDialog.show();
+
+                } else {
+                    Bundle bundle = new Bundle();
+                    String sharedPhoneNumber = sharedPreferences.getString("phoneNumber", phoneNumber);
+                    bundle.putString("username", sharedPhoneNumber);
+                    FragmentManager manager = ((AppCompatActivity) getContext()).getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = manager.beginTransaction();
+                    Fragment_accuont fragment_accuont = new Fragment_accuont();
+                    fragment_accuont.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.rel_parent_allView, fragment_accuont);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+                }
+
             }
         });
         return view;
@@ -131,7 +208,7 @@ public class FragmentHome extends Fragment implements BaseSliderView.OnSliderCli
         slider = view.findViewById(R.id.slider);
         sliderArray = new ArrayList<>();
         bannerArray = new ArrayList<>();
-       /* sliderArray.add("https://dkstatics-public.digikala.com/digikala-adservice-banners/3563.jpg");
+      /*  sliderArray.add("https://dkstatics-public.digikala.com/digikala-adservice-banners/3563.jpg");
         sliderArray.add("https://dkstatics-public.digikala.com/digikala-adservice-banners/3581.jpg");
         sliderArray.add("https://dkstatics-public.digikala.com/digikala-adservice-banners/3543.jpg");
         sliderArray.add("https://dkstatics-public.digikala.com/digikala-adservice-banners/3557.jpg");*/
@@ -159,9 +236,11 @@ public class FragmentHome extends Fragment implements BaseSliderView.OnSliderCli
         call.enqueue(new Callback<List<Slider>>() {
             @Override
             public void onResponse(Call<List<Slider>> call, Response<List<Slider>> response) {
+                // کل اطلاعات رسیده از سمت سرور داخل این لیست ریخته میشه
                 sliders = response.body();
                 for (int i = 0; i < sliders.size(); i++) {
                     // Toast.makeText(getContext(), sliders.get(i).getUrl() + "", Toast.LENGTH_SHORT).show();
+                    // اسلایدهای رسیده از سمت سرور داخل این آرایه ریخته میشه
                     sliderArray.add(sliders.get(i).getUrl());
                 }
                 for (int i = 0; i < sliderArray.size(); i++) {
@@ -191,7 +270,7 @@ public class FragmentHome extends Fragment implements BaseSliderView.OnSliderCli
             @Override
             public void onResponse(Call<List<Banner>> call, Response<List<Banner>> response) {
                 banners = response.body();
-               /* for (int i = 0; i < banners.size(); i++) {
+              /*  for (int i = 0; i < banners.size(); i++) {
                     Log.i("BANNERS", "onResponse: " + banners.get(i).getUrl());
                 }*/
                 bannersRecyclerView.setAdapter(new BannerAdapter(banners, getActivity()));

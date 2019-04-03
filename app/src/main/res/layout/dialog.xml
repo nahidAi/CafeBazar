@@ -47,7 +47,7 @@
             android:id="@+id/txt_dialog_userName"
             android:layout_marginRight="16dp"
             android:layout_toLeftOf="@+id/img_dialog_profile"
-            android:text="مجتبی"
+            android:text="کاربر"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

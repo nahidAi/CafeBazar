@@ -4,6 +4,8 @@ package test.bazar.com.cafebazar.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Slider {
+    // دقیقا برای بی نیاز بودن از پارس کردن این انوتیشن هارو مینویسیم
+    //و این نام های داخل انوتیشن ها باید همنام با کلیدهای جیسون باشه
     @SerializedName("id")
     private String id;
     @SerializedName("url")

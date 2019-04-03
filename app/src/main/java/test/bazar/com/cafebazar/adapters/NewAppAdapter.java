@@ -60,6 +60,7 @@ public class NewAppAdapter extends RecyclerView.Adapter<NewAppAdapter.newAppView
                 FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = manager.beginTransaction();
                 FragmentDetail fragmentDetail = new FragmentDetail();
+                //میگم من به فرگمنت دیتیل یک باندل پاس میدم
                 fragmentDetail.setArguments(bundle);
                 fragmentTransaction.replace(R.id.rel_parent_allView,fragmentDetail);
                 fragmentTransaction.addToBackStack(null);

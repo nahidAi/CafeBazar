@@ -33,11 +33,15 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("rating.php")
-    Call<ResponseBody>addComment(@Field("app_id") String appId, @Field("user_id") String userId, @Field("star") int star, @Field("comment_title  ") String comment);
+    Call<ResponseBody>addComment(@Field("app_id") String appId, @Field("user_id") String userId, @Field("star") int star, @Field("comment_title") String comment);
 
     @FormUrlEncoded
     @POST("sendsms.php")
     Call<ResponseBody>sendNumber(@Field("to")String phoneNumber);
+
+    @FormUrlEncoded
+    @POST("validation.php")
+    Call<ResponseBody>sendvalidationCode(@Field("code")String validationCode,@Field("phone_number")String number);
 
 
 

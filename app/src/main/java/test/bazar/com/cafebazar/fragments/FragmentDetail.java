@@ -85,7 +85,6 @@ public class FragmentDetail extends Fragment {
         return view;
     }
 
-
     @SuppressLint("ClickableViewAccessibility")
     public void firstSetup() {
         txtName = view.findViewById(R.id.txt_fragmentDetail_appName);
@@ -116,12 +115,13 @@ public class FragmentDetail extends Fragment {
         ratingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                sharedPreferences = getContext().getSharedPreferences("cafebazar", Context.MODE_PRIVATE);
-                final String userId = sharedPreferences.getString("username","");
+                if (event.getAction()==MotionEvent.ACTION_UP){
+                sharedPreferences = getContext().getSharedPreferences("home", Context.MODE_PRIVATE);
+                final String userId = sharedPreferences.getString("userId","");
                 if (userId.equals("")){
                     Toast.makeText(getContext(), "لطفا وارد حساب کاربری خود شوید", Toast.LENGTH_SHORT).show();
                 }else {
-                    Dialog dialog;
+                    final Dialog dialog;
                     dialog = new Dialog(getContext());
                     dialog.setContentView(R.layout.dialog);
                     final AppCompatRatingBar ratingBarDialog = dialog.findViewById(R.id.rt_dialog_ratingBar);
@@ -135,12 +135,19 @@ public class FragmentDetail extends Fragment {
                             String commentTitle = edtComment.getText().toString();
                             String appId = app.getId();
                             ApiService service = ApiClient.getClient().create(ApiService.class);
+                            Toast.makeText(getActivity(), userId+"", Toast.LENGTH_SHORT).show();
                             Call<ResponseBody> call = service.addComment(appId, userId, star, commentTitle);
                             call.enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                     try {
-                                        Log.i("LOG", "onResponse: " + response.body().string());
+                                        String addResult = response.body().string();
+                                        addResult = addResult.trim();
+                                        if (addResult.equals("ok")){
+                                            Toast.makeText(getContext(), " نظر شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        }
+                                       // Log.i("LOG", "onResponse: " + response.body().string());
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -156,14 +163,19 @@ public class FragmentDetail extends Fragment {
                     });
                     dialog.show();
                 }
+                }
+
 
 
                 return true;
+
             }
         });
 
 
+
     }
+
 
     public void getuniqeAppFromserver() {
         ApiService service = ApiClient.getClient().create(ApiService.class);
