@@ -13,6 +13,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 import test.bazar.com.cafebazar.models.App;
 import test.bazar.com.cafebazar.models.Banner;
+import test.bazar.com.cafebazar.models.Comment;
 import test.bazar.com.cafebazar.models.Slider;
 
 public interface ApiService {
@@ -44,6 +45,15 @@ public interface ApiService {
     Call<ResponseBody>sendvalidationCode(@Field("code")String validationCode,@Field("phone_number")String number);
 
 
+    @FormUrlEncoded
+    @POST("getallcomments.php")
+    Call<List<Comment>> getAppComments(@Field("app_id") String appId);
 
 
+    @GET("likedislike.php")
+    Call<ResponseBody> setVote(@Query("vote") String vote,@Query("user_id") String userId,@Query("comment_id")String commentId);
+
+
+    @GET("mostsell.php")
+    Call<List<App>>getMostsell();
 }

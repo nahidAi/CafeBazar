@@ -30,45 +30,45 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:tab_text=" برنامه ها"
-            app:tab_text_color = "@color/grey_600"
-            app:tab_icon="@drawable/ic_file_download_green_600_24dp"
-            />
+            app:tab_text_color = "@color/grey_600"/>
+           <!-- app:tab_icon="@drawable/ic_file_download_green_600_24dp"
+            />-->
         <com.ss.bottomnavigation.TabItem
             android:id="@+id/tab_search"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:tab_text="جستجو"
-            app:tab_text_color = "@color/grey_600"
-            app:tab_icon="@drawable/ic_search_green_600_24dp"
-            />
+            app:tab_text_color = "@color/grey_600"/>
+           <!-- app:tab_icon="@drawable/ic_search_green_600_24dp"
+            />-->
         <com.ss.bottomnavigation.TabItem
             android:id="@+id/tab_cats"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:tab_text="دسته ها"
-            app:tab_text_color = "@color/grey_600"
-            app:tab_icon="@drawable/ic_menu_green_600_24dp"
-            />
+            app:tab_text_color = "@color/grey_600"/>
+          <!--  app:tab_icon="@drawable/ic_menu_green_600_24dp"
+            />-->
         <com.ss.bottomnavigation.TabItem
             android:id="@+id/tab_bests"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:tab_text=" برترینها"
-            app:tab_text_color = "@color/grey_600"
-            app:tab_icon="@drawable/ic_equalizer_green_600_24dp"
-            />
+            app:tab_text_color = "@color/grey_600"/>
+            <!--app:tab_icon="@drawable/ic_equalizer_green_600_24dp"
+            />-->
         <com.ss.bottomnavigation.TabItem
             android:id="@+id/tab_home"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:tab_text="صفحه اصلی"
-            app:tab_text_color = "@color/grey_600"
-            app:tab_icon="@drawable/ic_home_green_600_24dp"
-            />
+            app:tab_text_color = "@color/grey_600"/>
+           <!-- app:tab_icon="@drawable/ic_home_green_600_24dp"
+            />-->
     </com.ss.bottomnavigation.BottomNavigation>
 
 </RelativeLayout>

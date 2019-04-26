@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <!--<ImageView
             android:layout_marginRight="16dp"
             android:id="@+id/img_commentDetailRow_like"
             app:srcCompat="@drawable/ic_like"
@@ -73,7 +73,7 @@
             android:id="@+id/txt_commentDetailRow_dislikeCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
+-->
     </RelativeLayout>
 
 </LinearLayout>

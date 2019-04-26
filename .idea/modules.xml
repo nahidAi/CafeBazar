@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CafeBazar.iml" filepath="$PROJECT_DIR$/CafeBazar.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/infinitescrollprovider/infinitescrollprovider.iml" filepath="$PROJECT_DIR$/infinitescrollprovider/infinitescrollprovider.iml" />
     </modules>
   </component>
 </project>

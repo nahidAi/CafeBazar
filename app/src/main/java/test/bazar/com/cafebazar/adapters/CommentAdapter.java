@@ -1,6 +1,8 @@
 package test.bazar.com.cafebazar.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import test.bazar.com.cafebazar.R;
@@ -23,8 +26,8 @@ import test.bazar.com.cafebazar.models.Comment;
  * Created by USER on 11/29/2018.
  */
 
-public class CommentAdapter extends RecyclerView .Adapter <CommentAdapter.CommentViewHolder>{
-    List<Comment>commentList;
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
+    List<Comment> commentList;
     Context context;
 
     public CommentAdapter(List<Comment> commentList, Context context) {
@@ -35,13 +38,13 @@ public class CommentAdapter extends RecyclerView .Adapter <CommentAdapter.Commen
     @NonNull
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.comment_raw,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.comment_raw, parent, false);
         return new CommentViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-        Comment comment = commentList.get(position);
+        final Comment comment = commentList.get(position);
         holder.ratingBar.setRating(Float.parseFloat(comment.getStar()));
         holder.txtUsername.setText(comment.getUser_name());
         holder.txtDesc.setText(comment.getTitle());
@@ -49,10 +52,13 @@ public class CommentAdapter extends RecyclerView .Adapter <CommentAdapter.Commen
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
+                FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("app_id", comment.getAppId());
                 FragmentComments fragmentComments = new FragmentComments();
-                transaction.replace(R.id.rel_parent_allView,fragmentComments);
+                fragmentComments.setArguments(bundle);
+                transaction.replace(R.id.rel_parent_allView, fragmentComments);
                 transaction.addToBackStack(null);
                 transaction.commit();
 
@@ -67,11 +73,12 @@ public class CommentAdapter extends RecyclerView .Adapter <CommentAdapter.Commen
         return commentList.size();
     }
 
-    public  class CommentViewHolder extends  RecyclerView.ViewHolder {
+    public class CommentViewHolder extends RecyclerView.ViewHolder {
         TextView txtUsername;
         TextView txtDesc;
         AppCompatRatingBar ratingBar;
         RelativeLayout parent;
+
         public CommentViewHolder(View itemView) {
             super(itemView);
             txtUsername = itemView.findViewById(R.id.txt_commentDetailRow_userName);

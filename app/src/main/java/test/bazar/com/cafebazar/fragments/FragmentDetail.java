@@ -4,10 +4,15 @@ package test.bazar.com.cafebazar.fragments;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -35,6 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import test.bazar.com.cafebazar.R;
+import test.bazar.com.cafebazar.SqliteOpenHelper;
 import test.bazar.com.cafebazar.adapters.CommentAdapter;
 import test.bazar.com.cafebazar.adapters.SlidesAdapter;
 import test.bazar.com.cafebazar.models.App;
@@ -68,6 +74,9 @@ public class FragmentDetail extends Fragment {
     TextView txtDesc;
     SharedPreferences sharedPreferences;
     int stars = 0;
+    ImageView shareAppLink;
+    ImageView addToFavorite;
+    SqliteOpenHelper sqliteOpenHelper;
 
 
     @Nullable
@@ -80,13 +89,44 @@ public class FragmentDetail extends Fragment {
         bIcon = bundle.getString("icon");
         bKind = bundle.getString("kind");
         firstSetup();
+        sqliteOpenHelper = new SqliteOpenHelper(getContext());
+        Cursor cursor = sqliteOpenHelper.getInfo();
+        for (cursor.moveToFirst();!cursor.isAfterLast();cursor.moveToNext()){
+            int id = cursor.getInt(0);
+            int appId = cursor.getInt(1);
+            if (appId==Integer.parseInt(bId)){
+                addToFavorite.setColorFilter(Color.argb(255,50,140,50));
+            }
+        }
         getuniqeAppFromserver();
 
         return view;
     }
-
     @SuppressLint("ClickableViewAccessibility")
     public void firstSetup() {
+        shareAppLink=view.findViewById(R.id.img_fragmentDetailToolbar_share);
+        shareAppLink.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+            @Override
+            public void onClick(View v) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT,"https://cafebazaar.ir/app/com.maahshe.client/?l=fa");
+                startActivity(Intent.createChooser(shareIntent,"انتشاراپلیکیشن"+bName));
+            }
+        });
+        addToFavorite = view.findViewById(R.id.img_fragmentDetailToolbar_addFavorite);
+        addToFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               long result= sqliteOpenHelper.addAppToFavorite(Integer.parseInt(bId),bName,bIcon,bKind);
+                Toast.makeText(getContext(), result+"", Toast.LENGTH_SHORT).show();
+                addToFavorite.setColorFilter(Color.argb(255,50,140,50));
+
+            }
+        });
+
+
+
         txtName = view.findViewById(R.id.txt_fragmentDetail_appName);
         txtKind = view.findViewById(R.id.txt_fragmentDetail_appPayment);
         imgIcon = view.findViewById(R.id.img_fragment_detail_icon);

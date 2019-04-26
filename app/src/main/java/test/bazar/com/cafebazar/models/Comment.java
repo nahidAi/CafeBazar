@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class Comment implements Parcelable {
+    //اینا دقیقا همنام با کلیدهای جیسون باید باشه وگرنه درست عمل نمیکنه و نال برمیگردونه
     @SerializedName("id")
     private String id;
     @SerializedName("title")
@@ -15,6 +16,37 @@ public class Comment implements Parcelable {
     private  String star;
     @SerializedName("user_name")
     private  String user_name;
+    @SerializedName("app_id")
+    private String appId;
+    @SerializedName("like")
+    private String like;
+    @SerializedName("dislike")
+    private String disLike;
+
+
+    public String getLike() {
+        return like;
+    }
+
+    public void setLike(String like) {
+        this.like = like;
+    }
+
+    public String getDisLike() {
+        return disLike;
+    }
+
+    public void setDisLike(String disLike) {
+        this.disLike = disLike;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
 
     public String getId() {
         return id;
